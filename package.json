@@ -1,12 +1,17 @@
 {
-  "name": "gelato-allegra---luxury-event-catering",
+  "name": "gelato-allegra-luxury-event-catering",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "description": "Premium Italian gelato catering service for luxury events",
+  "keywords": ["gelato", "catering", "events", "luxury", "italian"],
+  "author": "Gelato Allegra Team",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "vercel-build": "vite build"
   },
   "dependencies": {
     "react": "^19.2.3",
