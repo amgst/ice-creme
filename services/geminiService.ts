@@ -1,14 +1,37 @@
 
 import { GoogleGenAI } from "@google/genai";
 
+// Extend ImportMeta interface
+interface ImportMetaEnv {
+  VITE_GEMINI_API_KEY?: string;
+}
+
+interface ImportMeta {
+  env: ImportMetaEnv;
+}
+
 export class GeminiService {
-  private ai: GoogleGenAI;
+  private ai: GoogleGenAI | null = null;
+  private apiKey: string;
 
   constructor() {
-    this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+    // Try to get API key from environment variables
+    this.apiKey = import.meta.env.VITE_GEMINI_API_KEY || 
+                  (typeof process !== 'undefined' ? process.env.GEMINI_API_KEY : '') || 
+                  '';
+    
+    if (this.apiKey) {
+      this.ai = new GoogleGenAI({ apiKey: this.apiKey });
+    } else {
+      console.warn('Gemini API key not found. AI features will be disabled.');
+    }
   }
 
   async getEventAdvice(message: string): Promise<string> {
+    if (!this.ai) {
+      return "I'm sorry, but the AI service is currently unavailable. Please contact our team directly for personalized event recommendations!";
+    }
+    
     try {
       const response = await this.ai.models.generateContent({
         model: 'gemini-3-flash-preview',
